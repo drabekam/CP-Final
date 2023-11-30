@@ -1,0 +1,9 @@
+public class FavoriteFood
+{
+    public int MemberID { get; set; }
+    public string FavoriteFood { get; set; }
+    public string FoodCategory { get; set; }
+    public string Flavor { get; set; }
+    public string ForkSpoonHands { get; set; }
+    
+}
