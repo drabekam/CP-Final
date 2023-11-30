@@ -1,9 +1,11 @@
-public class Hobby
-{
-    public int MemberID { get; set; }
-    public string Hobby { get; set; }
-    public string HoursPerWeek { get; set; }
-    public string StartedHobby { get; set; }
-    public string Description { get; set; }
+namespace CP_Final.Models
+
+    public class Hobby
+    {
+        public int MemberID { get; set; }
+        public string Hobby { get; set; }
+        public string HoursPerWeek { get; set; }
+        public string StartedHobby { get; set; }
+        public string Description { get; set; }
     
-}
+    }
