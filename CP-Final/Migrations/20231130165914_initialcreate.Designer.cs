@@ -162,7 +162,7 @@ namespace CP_Final.Migrations
                         {
                             MemberID = 2,
                             Birthdate = "January 12th 2002",
-                            Program = "Drizzy",
+                            Program = "Information Technolog",
                             MemberName = "Jacob khan",
                             MemberYear = 2025
                         },
