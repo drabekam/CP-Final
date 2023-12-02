@@ -162,7 +162,7 @@ namespace CP_Final.Migrations
                         {
                             MemberID = 2,
                             Birthdate = "January 12th 2002",
-                            Program = "Information Technolog",
+                            Program = "Information Technology",
                             MemberName = "Jacob khan",
                             MemberYear = 2025
                         },
@@ -170,8 +170,8 @@ namespace CP_Final.Migrations
                         {
                             MemberID = 3,
                             Birthdate = "January 22nd 2003",
-                            Program = "Joji Alexander",
-                            MemberName = "Dylan Mullarkey",
+                            Program = "Information Technology",
+                            MemberName = "Joji Alexander",
                             MemberYear = 2025
                         });
                 });
