@@ -45,7 +45,7 @@ namespace CP_Final.Migrations
 
                     b.HasKey("MemberID");
 
-                    b.ToTable("FavoriteFood");
+                    b.ToTable("Foods");
 
                     b.HasData(
                         new
@@ -96,7 +96,7 @@ namespace CP_Final.Migrations
 
                     b.HasKey("MemberID");
 
-                    b.ToTable("Hobby");
+                    b.ToTable("Hobbies");
 
                     b.HasData(
                         new
@@ -147,7 +147,7 @@ namespace CP_Final.Migrations
 
                     b.HasKey("MemberID");
 
-                    b.ToTable("TeamMember");
+                    b.ToTable("MemberInfos");
 
                     b.HasData(
                         new
@@ -198,7 +198,7 @@ namespace CP_Final.Migrations
 
                     b.HasKey("MemberID");
 
-                    b.ToTable("FavoriteSeason");
+                    b.ToTable("Seasons");
 
                     b.HasData(
                         new
