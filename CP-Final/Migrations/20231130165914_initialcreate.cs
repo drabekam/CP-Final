@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace GroupAPIFinal.Migrations
+namespace CP_Final.Migrations
 {
     public partial class Initial : Migration
     {
