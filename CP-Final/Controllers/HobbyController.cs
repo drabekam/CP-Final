@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CP_Final.Models;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace CP_Final.Controllers
@@ -17,26 +18,32 @@ namespace CP_Final.Controllers
             _context = context;
         }
 
-        // Retrieve all Hobby entries
-        [HttpGet]
-        public ActionResult<List<Hobby>> GetAll()
+  
+        [HttpGet("{id:int?}")]
+        public ActionResult<List<Hobby>> Get(int? id)
         {
-            return _context.Hobbies.ToList();
-        }
-
-        // Retrieve a single Hobby by ID
-        [HttpGet("{id}")]
-        public ActionResult<Hobby> Get(int id)
-        {
-            var hobby = _context.Hobbies.FirstOrDefault(h => h.Id == id);
-            if (hobby == null)
+            if (!id.HasValue || id == 0)
             {
-                return NotFound();
+    
+                return _context.Hobbies.Take(5).ToList();
             }
-            return hobby;
+            else
+            {
+          
+                var hobby = _context.Hobbies.FirstOrDefault(h => h.Id == id);
+
+           
+                if (hobby == null)
+                {
+                    return NotFound();
+                }
+
+            
+                return new List<Hobby> { hobby };
+            }
         }
 
-        // Create a new Hobby
+    
         [HttpPost]
         public ActionResult<Hobby> Post(Hobby hobby)
         {
@@ -45,7 +52,7 @@ namespace CP_Final.Controllers
             return CreatedAtAction(nameof(Get), new { id = hobby.Id }, hobby);
         }
 
-        // Update an existing Hobby
+    
         [HttpPut("{id}")]
         public IActionResult Put(int id, Hobby hobby)
         {
@@ -58,7 +65,7 @@ namespace CP_Final.Controllers
             return NoContent();
         }
 
-        // Delete a Hobby
+
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

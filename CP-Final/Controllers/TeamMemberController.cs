@@ -1,15 +1,12 @@
-﻿
-//Use Statements the models one allows me to call the dbcontext items as they are using that namespace
-
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using CP_Final.Models;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace CP_Final.Controllers
 {
-    // Attribute indicating this class is an API controller 
+    // indicates that this class is an API controller 
     [ApiController]
     [Route("[controller]")]
     public class TeamMemberController : ControllerBase
@@ -23,31 +20,31 @@ namespace CP_Final.Controllers
             _context = context;
         }
 
-        // HTTP GET method to retrieve all TeamMember entries
-        // Route: /TeamMember
-        [HttpGet]
-        public ActionResult<List<TeamMember>> GetAll()
-        {
-            // Fetches all team members from the database and returns them
-            return _context.TeamMembers.ToList();
-        }
-
-        // HTTP GET method to retrieve a single TeamMember by ID
+        // Combined HTTP GET method to retrieve a single TeamMember by ID or the first five TeamMember entries
+        // If id is null or zero
         // Route: /TeamMember/{id}
-        [HttpGet("{id}")]
-        public ActionResult<TeamMember> Get(int id)
+        [HttpGet("{id:int?}")]
+        public ActionResult<List<TeamMember>> Get(int? id)
         {
-            // Finds the team member with the specified ID
-            var teamMember = _context.TeamMembers.FirstOrDefault(tm => tm.MemberID == id);
-
-            // If not found returns a 404 
-            if (teamMember == null)
+            if (!id.HasValue || id == 0)
             {
-                return NotFound();
+                // gets first five team members from the database and returns them
+                return _context.TeamMembers.Take(5).ToList();
             }
+            else
+            {
+                // Finds the team member with the specified ID
+                var teamMember = _context.TeamMembers.FirstOrDefault(tm => tm.MemberID == id);
 
-            // Returns the found team member
-            return teamMember;
+                // If not found returns a 404 
+                if (teamMember == null)
+                {
+                    return NotFound();
+                }
+
+                // Returns the found team member
+                return new List<TeamMember> { teamMember };
+            }
         }
 
         // HTTP POST method to create a new TeamMember
@@ -59,7 +56,7 @@ namespace CP_Final.Controllers
             _context.TeamMembers.Add(teamMember);
             // Saves the changes to the database
             _context.SaveChanges();
-            // Returns a 201 if it works
+            // Returns a 201 Created response with the newly created team member
             return CreatedAtAction(nameof(Get), new { id = teamMember.MemberID }, teamMember);
         }
 
@@ -68,7 +65,7 @@ namespace CP_Final.Controllers
         [HttpPut("{id}")]
         public ActionResult Update(int id, TeamMember teamMember)
         {
-            // Checks if the ID in the URL matches the team members ID
+            // Checks if the ID in the URL matches the team member's ID
             if (id != teamMember.MemberID)
             {
                 return BadRequest();
@@ -82,7 +79,7 @@ namespace CP_Final.Controllers
                 return NotFound();
             }
 
-            // Updates the team members
+            // Updates the team member's properties
             existingTeamMember.MemberName = teamMember.MemberName;
             existingTeamMember.BirthDate = teamMember.BirthDate;
             existingTeamMember.Program = teamMember.Program;
@@ -93,7 +90,7 @@ namespace CP_Final.Controllers
             // Saves the changes to the database
             _context.SaveChanges();
 
-            // Returns a 204 
+            // Returns a 204 No Content response
             return NoContent();
         }
 
@@ -115,7 +112,7 @@ namespace CP_Final.Controllers
             // Saves the changes to the database
             _context.SaveChanges();
 
-            // Returns a 204 
+            // Returns a 204 No Content response
             return NoContent();
         }
     }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CP_Final.Models;
-
+using Microsoft.EntityFrameworkCore; // Ensure this is added if EntityState is used
 
 namespace CP_Final.Controllers
 {
@@ -17,26 +17,32 @@ namespace CP_Final.Controllers
             _context = context;
         }
 
-        // Retrieve all FavoriteSeason entries
-        [HttpGet]
-        public ActionResult<List<FavoriteSeason>> GetAll()
+        
+        [HttpGet("{id:int?}")]
+        public ActionResult<List<FavoriteSeason>> Get(int? id)
         {
-            return _context.FavoriteSeasons.ToList();
-        }
-
-        // Retrieve a single FavoriteSeason by ID
-        [HttpGet("{id}")]
-        public ActionResult<FavoriteSeason> Get(int id)
-        {
-            var favoriteSeason = _context.FavoriteSeasons.FirstOrDefault(fs => fs.Id == id);
-            if (favoriteSeason == null)
+            if (!id.HasValue || id == 0)
             {
-                return NotFound();
+              
+                return _context.FavoriteSeasons.Take(5).ToList();
             }
-            return favoriteSeason;
+            else
+            {
+               
+                var favoriteSeason = _context.FavoriteSeasons.FirstOrDefault(fs => fs.Id == id);
+
+             
+                if (favoriteSeason == null)
+                {
+                    return NotFound();
+                }
+
+            
+                return new List<FavoriteSeason> { favoriteSeason };
+            }
         }
 
-        // Create a new FavoriteSeason
+      
         [HttpPost]
         public ActionResult<FavoriteSeason> Post(FavoriteSeason favoriteSeason)
         {
@@ -45,7 +51,7 @@ namespace CP_Final.Controllers
             return CreatedAtAction(nameof(Get), new { id = favoriteSeason.Id }, favoriteSeason);
         }
 
-        // Update an existing FavoriteSeason
+     
         [HttpPut("{id}")]
         public IActionResult Put(int id, FavoriteSeason favoriteSeason)
         {
@@ -58,7 +64,7 @@ namespace CP_Final.Controllers
             return NoContent();
         }
 
-        // Delete a FavoriteSeason
+     
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
